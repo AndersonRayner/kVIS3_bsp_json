@@ -51,7 +51,16 @@ rawText = fscanf(fid, '%s', inf);
 fclose(fid);
 
 % Replace nans with 0 (as matlab doesn't like it)
-dataRaw = strrep(rawText,'NaN','0.0');
+rawText = strrep(rawText,'NaN','0.0');
+
+if rawText(end) ~= ']'
+    rawText(end+1) = ']';
+end
+
+if rawText(end-1) ~= '}'
+    rawText(end) = '}';
+    rawText(end+1) = ']';
+end
 
 % Decode json file
 dataRaw = jsondecode(rawText);
