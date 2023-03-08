@@ -22,6 +22,11 @@ function [] = import_json_folder(hObject, ~)
 
 %% Select APM Log folder
 root_directory = uigetdir(pwd,'Import JSON Folder');
+
+if (root_directory == 0)
+    return
+end
+
 files = dir([root_directory,'\**\*.json']);
 
 % Import each file

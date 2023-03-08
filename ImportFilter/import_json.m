@@ -23,7 +23,7 @@ function fds = import_json(file)
 
 if ~nargin
     % Debugging
-    file = 'C:\Users\matt\Downloads\jumpAeroData\pitch-stand-tests_10_2023-03-06-10-33-55.json';
+    file = 'C:\Users\matt\Downloads\jumpAeroData\matlab_stuff\data\pitch-stand-tests_106_2023-03-07-15-11-14.json';
 
 end
 
@@ -39,7 +39,7 @@ fds = kVIS_fdsInitNew();
 
 fds.BoardSupportPackage = 'json';
 
-[fds, parentNode] = kVIS_fdsAddTreeBranch(fds, 0, 'json_data');
+[fds, rootNode] = kVIS_fdsAddTreeBranch(fds, 0, 'json_data');
 
 %% Import json file into struct to read
 fid = fopen(file, 'r');
@@ -189,6 +189,20 @@ for ii = 1:numel(groups)
     end
       
     % Generate the kVIS data structure
+    if contains(groupName,'_')
+            idx = find(groupName=='_');
+
+            name_before = groupName(1:idx(1)-1);
+            groupName = groupName(idx(1)+1:end);
+
+            [~, parentNode] = kVIS_fdsGetGroup(fds, name_before);
+
+            if parentNode <= 0
+                [ fds, parentNode ] = kVIS_fdsAddTreeBranch(fds, 1, name_before);
+            end
+    else
+        parentNode = rootNode;
+    end
     fds = kVIS_fdsAddTreeLeaf(fds, groupName, varNames, varNames, varUnits, varFrames, data, parentNode, false);
  
 end

@@ -36,7 +36,7 @@ clear_existing_events = str2double(answer{5});
 for ii = 1:numel(fds)
 
     % Extract channel
-    fprintf('Generating events based on RCIN changes.\n');
+    fprintf('Generating events based on %s/%s changes.\n',group,channel);
     times   = kVIS_fdsGetChannel(fds{ii}, group,'Time');
     values = kVIS_fdsGetChannel(fds{ii}, group, channel);
 
